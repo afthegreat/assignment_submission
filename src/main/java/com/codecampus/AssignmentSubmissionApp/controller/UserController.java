@@ -14,7 +14,6 @@ import com.codecampus.AssignmentSubmissionApp.repository.UserRepository;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-
 	@Autowired
 	private UserRepository userRepository;
 
@@ -23,6 +22,7 @@ public class UserController {
 
 	@PostMapping("/register")
 	public String register(@RequestBody RegisterUser request) {
+		System.out.println("inside the user controller ");
 
 		// check if user already exists
 		if (userRepository.findByUsername(request.getUsername()).isPresent()) {

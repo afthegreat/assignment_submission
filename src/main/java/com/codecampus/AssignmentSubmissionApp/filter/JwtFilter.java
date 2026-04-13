@@ -28,10 +28,21 @@ public class JwtFilter extends OncePerRequestFilter {
 	
 	@Autowired
 	private JwtUtil jwtUtil;
-
+	
+	@Override
+	protected boolean shouldNotFilter(HttpServletRequest request) {
+		String path= request.getServletPath();
+		System.out.print("The Path is "+ path);
+		return path.startsWith("/auth/login") ||
+				path.startsWith("/users/register")||
+				path.startsWith("/authority")||
+				path.startsWith("/swagger-ui") ||  // Add this
+				path.startsWith("/v3/api-docs");
+	}
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
+	
 		// Get Authorization Header	
 		final String authHeader = request.getHeader("Authorization");
 		

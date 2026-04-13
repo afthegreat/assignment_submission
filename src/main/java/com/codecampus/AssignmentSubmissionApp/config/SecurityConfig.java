@@ -33,7 +33,13 @@ public class SecurityConfig {
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
 				// Authorization Rules
-				.authorizeHttpRequests(auth -> auth.requestMatchers("/auth/login", "/users/register").permitAll()
+				.authorizeHttpRequests(auth -> auth.requestMatchers(
+								"/auth/login",
+								"/users/register",
+								"/authority/**",
+								"/v3/api-docs/**",     // Swagger metadata
+								"/swagger-ui/**",      // Swagger UI HTML
+								"/swagger-ui.html").permitAll()
 						.anyRequest().authenticated())
 				.authenticationProvider(authenticationProvider())
 				// Add Jwt Filter
@@ -56,11 +62,12 @@ public class SecurityConfig {
 
 	@Bean
 	public DaoAuthenticationProvider authenticationProvider() {
-	    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService);
-	
-	    authProvider.setPasswordEncoder(passwordEncoder());
-	
-	    return authProvider;
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+
+		// Use the setter methods instead of the constructor
+		authProvider.setUserDetailsService(userDetailsService);
+		authProvider.setPasswordEncoder(passwordEncoder());
+
+		return authProvider;
 	}
-	
 }
