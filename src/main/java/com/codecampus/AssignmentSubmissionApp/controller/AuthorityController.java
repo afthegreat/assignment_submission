@@ -1,6 +1,7 @@
 package com.codecampus.AssignmentSubmissionApp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,10 +23,11 @@ public class AuthorityController {
 	@Autowired
 	private UserRepository userRepository;
 	@PostMapping("/create")
+	@PreAuthorize("hasRole('ADMIN')")
 	public String createauthority(@RequestBody CreateAuthority request) {
 		System.out.println("inside the authority controller ");
 		//check if the user is existing
-		User user= userRepository.findById(request.getUser().getId())
+		User user= userRepository.findById(request.getUserId())
 				.orElseThrow(()-> new RuntimeException("User not found"));
 		//check if the user has that role already
 		if(authorityRepository

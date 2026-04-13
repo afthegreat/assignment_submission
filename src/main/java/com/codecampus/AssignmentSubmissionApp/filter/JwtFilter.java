@@ -4,6 +4,7 @@ import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -32,10 +33,9 @@ public class JwtFilter extends OncePerRequestFilter {
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) {
 		String path= request.getServletPath();
-		System.out.print("The Path is "+ path);
+		System.out.println("The Path is "+ path);
 		return path.startsWith("/auth/login") ||
 				path.startsWith("/users/register")||
-				path.startsWith("/authority")||
 				path.startsWith("/swagger-ui") ||  // Add this
 				path.startsWith("/v3/api-docs");
 	}
@@ -56,28 +56,29 @@ public class JwtFilter extends OncePerRequestFilter {
 		}
 		
 		//If username exists and user is not already authenticated
-		if(username !=null && SecurityContextHolder.getContext().getAuthentication()==null) {
-			
-			//Load user from DB
-			UserDetails userDetails=userDetailsService.loadUserByUsername(username);
-			
-			//validate token
-			if(jwtUtil.validateToken(jwt, userDetails)) {
-				
-				//create authentication object
-				UsernamePasswordAuthenticationToken authToken=
-						new UsernamePasswordAuthenticationToken(
-								userDetails,null, userDetails.getAuthorities());
-				
-				//attach request details
+		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+
+			// We still load UserDetails to check if the account is disabled/locked
+			UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+			if (jwtUtil.validateToken(jwt, userDetails)) {
+
+				// --- THIS IS THE EXTRACTION STEP ---
+				// 1. Get the "ROLE_ADMIN,ROLE_STUDENT" string from the token
+				String authoritiesStr = jwtUtil.extractAuthorities(jwt);
+
+				// 2. Convert that string into Spring Security's list format
+				var authorities = AuthorityUtils.commaSeparatedStringToAuthorityList(authoritiesStr);
+
+				// 3. Create the auth object using the roles from the TOKEN
+				UsernamePasswordAuthenticationToken authToken =
+						new UsernamePasswordAuthenticationToken(userDetails, null, authorities);
+				// ------------------------------------
+
 				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-				
-				//set authentication in context
 				SecurityContextHolder.getContext().setAuthentication(authToken);
 			}
-		}
-		
-		//continue filter chain
+		}		//continue filter chain
 		filterChain.doFilter(request, response);
 		
 	}

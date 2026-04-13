@@ -5,14 +5,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name="users")
@@ -23,6 +19,8 @@ public class User implements UserDetails{
     private LocalDate cohortStartDate;
 	private String username;
 	private String password;
+	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+	private List<Authority> authorities = new ArrayList<>();
 	public long getId() {
 		return id;
 	}
@@ -64,15 +62,17 @@ public class User implements UserDetails{
 	}
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-    List<GrantedAuthority> roles= new ArrayList<>();
-    roles.add(new Authority("Role_STUDENT") {
-	@Override
-	public String getAuthority() {
-		return "Role_Student";
+		List<GrantedAuthority> roles = new ArrayList<>();
+
+		// This now loops through the authorities from the DB
+		if (authorities != null) {
+			authorities.forEach(auth -> {
+				//prefix the existing roles with ROLE_
+				roles.add(new SimpleGrantedAuthority("ROLE_" + auth.getAuthority()));
+			});
+		}
+
+		return roles;
 	}
-});
-return roles;
-	}
-	
 	
 }

@@ -7,12 +7,14 @@ import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
@@ -61,14 +63,22 @@ public class JwtUtil {
 
     // Generate Token
     public String generateToken(UserDetails userDetails) {
+        String authorities= userDetails.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
         return Jwts.builder()
-                .subject(userDetails.getUsername())   
+                .subject(userDetails.getUsername())
+                .claim("authorities",authorities)
                 .issuedAt(new Date())                 
                 .expiration(new Date(System.currentTimeMillis() + jwtExpiration)) 
                 .signWith(getSignKey())             
                 .compact();
     }
 
+    //Extracts the authorities string from the token
+    public String extractAuthorities(String token){
+        return extractClaim(token, claims -> claims.get("authorities",String.class));
+    }
     // ✅ Validate Token
     public boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);

@@ -9,6 +9,6 @@ import lombok.Setter;
 public class CreateAuthority {
 
 	private String authority;
-	private User user;
+	private Long userId;
 
 }

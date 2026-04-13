@@ -6,7 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +19,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.codecampus.AssignmentSubmissionApp.filter.JwtFilter;
 
 @Configuration
+@EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 	@Autowired
 	private JwtFilter jwtFilter;
@@ -36,7 +40,6 @@ public class SecurityConfig {
 				.authorizeHttpRequests(auth -> auth.requestMatchers(
 								"/auth/login",
 								"/users/register",
-								"/authority/**",
 								"/v3/api-docs/**",     // Swagger metadata
 								"/swagger-ui/**",      // Swagger UI HTML
 								"/swagger-ui.html").permitAll()
