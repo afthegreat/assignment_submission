@@ -38,4 +38,6 @@ public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint 
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED); // 401 is better than 403 for "Not Logged In"
         response.getWriter().write(mapper.writeValueAsString(error));
     }
+
+
 }
