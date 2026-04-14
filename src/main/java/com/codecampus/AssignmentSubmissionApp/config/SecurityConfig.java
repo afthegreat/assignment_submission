@@ -39,7 +39,7 @@ public class SecurityConfig {
 				// Authorization Rules
 				.authorizeHttpRequests(auth -> auth.requestMatchers(
 								"/auth/login",
-								"/users/register",
+								"/auth/refresh",
 								"/v3/api-docs/**",     // Swagger metadata
 								"/swagger-ui/**",      // Swagger UI HTML
 								"/swagger-ui.html").permitAll()
@@ -47,7 +47,6 @@ public class SecurityConfig {
 				.authenticationProvider(authenticationProvider())
 				// Add Jwt Filter
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-		// .logout(logout -> logout.permitAll());
 
 		return http.build();
 	}

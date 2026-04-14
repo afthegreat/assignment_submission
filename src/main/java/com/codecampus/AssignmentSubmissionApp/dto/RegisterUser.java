@@ -2,6 +2,7 @@ package com.codecampus.AssignmentSubmissionApp.dto;
 
 import java.time.LocalDate;
 
+
 public class RegisterUser {
 
 	private String username;

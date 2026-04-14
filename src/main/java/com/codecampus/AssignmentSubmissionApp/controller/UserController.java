@@ -1,6 +1,8 @@
 package com.codecampus.AssignmentSubmissionApp.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +15,7 @@ import com.codecampus.AssignmentSubmissionApp.repository.UserRepository;
 
 @RestController
 @RequestMapping("/users")
+@EnableMethodSecurity
 public class UserController {
 	@Autowired
 	private UserRepository userRepository;
@@ -21,6 +24,7 @@ public class UserController {
 	private PasswordEncoder passwordEncoder;
 
 	@PostMapping("/register")
+	@PreAuthorize("hasRole('ADMIN')")
 	public String register(@RequestBody RegisterUser request) {
 		System.out.println("inside the user controller ");
 

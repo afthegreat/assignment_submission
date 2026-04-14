@@ -1,12 +1,18 @@
 package com.codecampus.AssignmentSubmissionApp.dto;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class AuthResponse {
 
-	private String token;
-	public AuthResponse(String token) {
-		this.token=token;
+	private String accessToken;
+	private String refreshToken;
+	public AuthResponse(String accessToken, String refreshToken) {
+
+		this.accessToken=accessToken;
+		this.refreshToken=refreshToken;
 	}
-	public String getToken() {
-		return token;
-	}
+
 }

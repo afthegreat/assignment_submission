@@ -35,7 +35,6 @@ public class JwtFilter extends OncePerRequestFilter {
 		String path= request.getServletPath();
 		System.out.println("The Path is "+ path);
 		return path.startsWith("/auth/login") ||
-				path.startsWith("/users/register")||
 				path.startsWith("/swagger-ui") ||  // Add this
 				path.startsWith("/v3/api-docs");
 	}
@@ -49,10 +48,10 @@ public class JwtFilter extends OncePerRequestFilter {
 		String jwt= null;
 		String username=null;
 		
-		//Check if header conatins Bearer token
+		//Check if header contains Bearer token
 		if(authHeader!=null && authHeader.startsWith("Bearer ")) {
-			jwt=authHeader.substring(7);//reamove "Bearer"
-			username=jwtUtil.extractUsername(jwt);
+			jwt=authHeader.substring(7);//remove "Bearer "
+			username=jwtUtil.extractUsername(jwt);//extract the username subject from the token
 		}
 		
 		//If username exists and user is not already authenticated
@@ -64,7 +63,7 @@ public class JwtFilter extends OncePerRequestFilter {
 			if (jwtUtil.validateToken(jwt, userDetails)) {
 
 				// --- THIS IS THE EXTRACTION STEP ---
-				// 1. Get the "ROLE_ADMIN,ROLE_STUDENT" string from the token
+				//extract the authorities from the jwt token
 				String authoritiesStr = jwtUtil.extractAuthorities(jwt);
 
 				// 2. Convert that string into Spring Security's list format
