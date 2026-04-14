@@ -13,7 +13,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.codecampus.AssignmentSubmissionApp.filter.JwtFilter;
@@ -27,12 +29,18 @@ public class SecurityConfig {
 	@Autowired
 	private UserDetailsService userDetailsService;
 
+	@Autowired
+	private AuthenticationEntryPoint authEntryPoint;
+
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain filterChain(HttpSecurity http ) throws Exception {
 		http
 				// disable CSRF for API'S
 				.csrf(csrf -> csrf.disable())
-
+				//add custom exception handlers
+				.exceptionHandling(exception -> exception
+						.authenticationEntryPoint(authEntryPoint)
+				)
 				// Stateless session
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
@@ -57,6 +65,7 @@ public class SecurityConfig {
 		return config.getAuthenticationManager();
 	}
 
+	//password encryption mechanism definition
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
