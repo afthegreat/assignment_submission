@@ -6,10 +6,13 @@ import java.util.Collection;
 import java.util.List;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
+@Getter
+@Setter
 @Entity
 @Table(name="users")
 public class User implements UserDetails{
@@ -19,37 +22,14 @@ public class User implements UserDetails{
     private LocalDate cohortStartDate;
 	private String username;
 	private String password;
+	@Column(nullable = false)
+	private boolean isAccountNonExpired=true;
+	@Column (nullable = false)
+	private boolean isAccountNonLocked=true;
+	@Column(name = "failed_attempts", nullable = false)
+	private int failedAttempts = 0;
 	@OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
 	private List<Authority> authorities = new ArrayList<>();
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
-	@Override
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
-	@Override
-	public String getPassword() {
-		return password;
-	}
-	public void setPassword(String password) {
-		this.password = password;
-	}
-	@Override
-	public boolean isAccountNonExpired() {
-	    return true;
-	}
-
-	@Override
-	public boolean isAccountNonLocked() {
-	    return true;
-	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
