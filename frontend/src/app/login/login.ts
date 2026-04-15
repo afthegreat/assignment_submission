@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { FormsModule } from '@angular/forms'; // For handling input data
 import { AuthService } from "../core/services/auth-service";
 import { CommonModule } from "@angular/common";
+import {Router} from '@angular/router';
 @Component({
   selector: "app-login",
   standalone: true,
@@ -24,7 +25,7 @@ import { CommonModule } from "@angular/common";
 })
 export class Login {
   authService = inject(AuthService);
-
+  router= inject(Router);
   //local state for the form
   username = '';
   password = '';
@@ -36,7 +37,13 @@ export class Login {
         password: this.password
       }).subscribe({
         next: () => {
-          console.log('Login successful');
+  const user= this.authService.currentUser();
+  if(user.authorities.includes('ROLE_STUDENT')){
+    this.router.navigate(['/student']);
+  }
+  else if (user.authorities.includes('ROLE_ADMIN')){
+    this.router.navigate(['/admin']);
+  }
         },
         error: (err) => {
           console.log('Login failed', err);
