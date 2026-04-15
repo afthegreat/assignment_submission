@@ -35,6 +35,7 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http ) throws Exception {
 		http
+				.cors(cors->cors.configurationSource(corsConfigurationSource()))
 				// disable CSRF for API'S
 				.csrf(csrf -> csrf.disable())
 				//add custom exception handlers
@@ -57,6 +58,29 @@ public class SecurityConfig {
 				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
+	}
+
+	//CORS configuration
+
+	@Bean
+	public org.springframework.web.cors.CorsConfigurationSource corsConfigurationSource() {
+		org.springframework.web.cors.CorsConfiguration configuration = new org.springframework.web.cors.CorsConfiguration();
+
+		// Allow the Angular dev server origin
+		configuration.setAllowedOrigins(java.util.List.of("http://localhost:4200"));
+
+		// Allow standard methods
+		configuration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+
+		// Allow all headers (important for Authorization and Content-Type)
+		configuration.setAllowedHeaders(java.util.List.of("*"));
+
+		// Allow cookies/credentials to be sent (since you're using cookies in Angular)
+		configuration.setAllowCredentials(true);
+
+		org.springframework.web.cors.UrlBasedCorsConfigurationSource source = new org.springframework.web.cors.UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 
 	//Authentication Manager for login API
