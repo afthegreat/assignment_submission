@@ -1,0 +1,58 @@
+<div class="login-wrapper">
+    <div class="login-box">
+        <!-- Branding Section -->
+        <div class="login-branding">
+            <div class="branding-content">
+                <mat-icon class="branding-icon">school</mat-icon>
+                <h2 class="branding-title">Student Portal</h2>
+                <p class="branding-text">Submit assignments, check grades, and manage your academic success all in one
+                    place.</p>
+            </div>
+            <!-- Background overlay effect -->
+            <div class="branding-overlay"></div>
+        </div>
+
+        <!-- Form Section -->
+        <div class="login-form-container">
+            <div class="form-header">
+                <h1>Welcome Back</h1>
+                <p>Please enter your details to sign in.</p>
+            </div>
+
+            <form class="form-content" (submit)="$event.preventDefault()">
+
+                @if (authService.error()) {
+                <p class="error-message">
+                    {{ authService.error() }}
+                </p>
+                }
+
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Username</mat-label>
+                    <input matInput type="text" [(ngModel)]="username" name="username" required>
+                    <mat-icon matSuffix class="field-icon">person</mat-icon>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="form-field">
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" [(ngModel)]="password" name="password" required>
+                    <mat-icon matSuffix class="field-icon">lock</mat-icon>
+                </mat-form-field>
+
+                <button mat-flat-button color="primary" class="submit-btn"
+                    [disabled]="authService.isLoading() || !username || !password" (click)="onLogin()">
+
+                    @if (authService.isLoading()) {
+                    <span>Signing in...</span>
+                    } @else {
+                    <span>Sign In</span>
+                    }
+                </button>
+            </form>
+
+            <div class="form-footer">
+                <p>Don't have an account? <a href="#">Contact admin</a></p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,220 @@
+/* Added a modern and professional UI using flexbox, soft shadows, and a gradient background. */
+.login-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  background: linear-gradient(135deg, #f0f4ff 0%, #e0e7ff 100%);
+  font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.login-box {
+  display: flex;
+  width: 100%;
+  max-width: 900px;
+  min-height: 500px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15), 0 15px 25px -15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.2), 0 18px 36px -18px rgba(0, 0, 0, 0.1);
+}
+
+.login-branding {
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .login-branding {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 45%;
+    background: linear-gradient(145deg, #4f46e5 0%, #3b82f6 100%);
+    position: relative;
+    padding: 40px;
+    color: white;
+    text-align: center;
+    overflow: hidden;
+  }
+}
+
+.branding-content {
+  z-index: 2;
+  position: relative;
+}
+
+.branding-icon {
+  font-size: 72px;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 24px;
+  opacity: 0.95;
+}
+
+.branding-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+  letter-spacing: -0.5px;
+}
+
+.branding-text {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #e0e7ff;
+  margin: 0;
+  max-width: 250px;
+}
+
+/* Decorative glassmorphism circles inside the branding panel */
+.branding-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.branding-overlay::before,
+.branding-overlay::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  filter: blur(25px);
+}
+
+.branding-overlay::before {
+  width: 300px;
+  height: 300px;
+  top: -100px;
+  left: -100px;
+}
+
+.branding-overlay::after {
+  width: 250px;
+  height: 250px;
+  bottom: -80px;
+  right: -80px;
+}
+
+.login-form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  padding: 40px 30px;
+}
+
+@media (min-width: 768px) {
+  .login-form-container {
+    width: 55%;
+    padding: 50px 60px;
+  }
+}
+
+.form-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.form-header h1 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1f2937;
+  margin: 0 0 8px 0;
+  letter-spacing: -0.5px;
+}
+
+.form-header p {
+  font-size: 15px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.form-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-field {
+  width: 100%;
+}
+
+.field-icon {
+  color: #9ca3af;
+}
+
+.form-actions-top {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: -10px;
+  margin-bottom: 20px;
+}
+
+.forgot-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4f46e5;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.forgot-link:hover {
+  opacity: 0.8;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 48px !important;
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.2), 0 2px 4px -1px rgba(79, 70, 229, 0.1) !important;
+  letter-spacing: 0.5px !important;
+}
+
+.form-footer {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.form-footer p {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.form-footer a {
+  font-weight: 600;
+  color: #4f46e5;
+  text-decoration: none;
+}
+
+.form-footer a:hover {
+  text-decoration: underline;
+}
+
+.error-message {
+  background-color: #fde8e8;
+  color: #c81e1e;
+  padding: 0.75rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+  border: 1px solid #f8b4b4;
+  text-align: center;
+}
