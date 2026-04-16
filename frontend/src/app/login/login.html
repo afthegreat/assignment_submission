@@ -1,0 +1,30 @@
+<div class="login-container">
+    <mat-card class="login-card">
+        <mat-card-header>
+            <mat-card-title>Login</mat-card-title>
+            <mat-card-subtitle>Assignment Submission App</mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+            <form class="login-form">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>User name</mat-label>
+                    <input matInput type="text" placeholder="Jhon doe">
+                    <mat-icon matSuffix>person</mat-icon>
+                </mat-form-field>
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password">
+                    <mat-icon matSuffix>lock</mat-icon>
+                    <mat-hint align="end">
+                        <a class="forgot-password-link">Forgot password?</a>
+                    </mat-hint>
+                </mat-form-field>
+            </form>
+        </mat-card-content>
+        <mat-card-actions align="end">
+            <button mat-raised-button color="primary" class="login-btn">LOGIN</button>
+        </mat-card-actions>
+
+    </mat-card>
+</div>

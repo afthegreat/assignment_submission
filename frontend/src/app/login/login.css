@@ -1,0 +1,46 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+    /* Centers the card vertically */
+}
+
+.login-card {
+    width: 400px;
+    padding: 20px;
+}
+
+.full-width {
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+mat-card-header {
+    margin-bottom: 20px;
+}
+
+.forgot-password-link {
+    text-decoration: none;
+    color: #3f51b5; /* material primary blue */
+    font-weight: 500;
+    cursor: pointer;
+    font-size: 13px;
+    transition: color 0.2s ease-in-out, text-decoration 0.2s;
+}
+
+.forgot-password-link:hover {
+    color: #303f9f;
+    text-decoration: underline;
+}
+
+.login-btn {
+    padding: 0 30px !important;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+mat-card-actions {
+    margin-top: 10px;
+    padding-bottom: 10px !important;
+}
