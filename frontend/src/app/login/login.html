@@ -1,58 +1,30 @@
-<div class="login-wrapper">
-    <div class="login-box">
-        <!-- Branding Section -->
-        <div class="login-branding">
-            <div class="branding-content">
-                <mat-icon class="branding-icon">school</mat-icon>
-                <h2 class="branding-title">Student Portal</h2>
-                <p class="branding-text">Submit assignments, check grades, and manage your academic success all in one
-                    place.</p>
-            </div>
-            <!-- Background overlay effect -->
-            <div class="branding-overlay"></div>
-        </div>
+<div class="login-container">
+    <mat-card class="login-card">
+        <mat-card-header>
+            <mat-card-title>Login</mat-card-title>
+            <mat-card-subtitle>Assignment Submission App</mat-card-subtitle>
+        </mat-card-header>
 
-        <!-- Form Section -->
-        <div class="login-form-container">
-            <div class="form-header">
-                <h1>Welcome Back</h1>
-                <p>Please enter your details to sign in.</p>
-            </div>
-
-            <form class="form-content" (submit)="$event.preventDefault()">
-
-                @if (authService.error()) {
-                <p class="error-message">
-                    {{ authService.error() }}
-                </p>
-                }
-
-                <mat-form-field appearance="outline" class="form-field">
-                    <mat-label>Username</mat-label>
-                    <input matInput type="text" [(ngModel)]="username" name="username" required>
-                    <mat-icon matSuffix class="field-icon">person</mat-icon>
+        <mat-card-content>
+            <form class="login-form">
+                <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>User name</mat-label>
+                    <input matInput type="text" placeholder="Jhon doe">
+                    <mat-icon matSuffix>person</mat-icon>
                 </mat-form-field>
-
-                <mat-form-field appearance="outline" class="form-field">
+                <mat-form-field appearance="outline" class="full-width">
                     <mat-label>Password</mat-label>
-                    <input matInput type="password" [(ngModel)]="password" name="password" required>
-                    <mat-icon matSuffix class="field-icon">lock</mat-icon>
+                    <input matInput type="password">
+                    <mat-icon matSuffix>lock</mat-icon>
+                    <mat-hint align="end">
+                        <a class="forgot-password-link">Forgot password?</a>
+                    </mat-hint>
                 </mat-form-field>
-
-                <button mat-flat-button color="primary" class="submit-btn"
-                    [disabled]="authService.isLoading() || !username || !password" (click)="onLogin()">
-
-                    @if (authService.isLoading()) {
-                    <span>Signing in...</span>
-                    } @else {
-                    <span>Sign In</span>
-                    }
-                </button>
             </form>
+        </mat-card-content>
+        <mat-card-actions align="end">
+            <button mat-raised-button color="primary" class="login-btn">LOGIN</button>
+        </mat-card-actions>
 
-            <div class="form-footer">
-                <p>Don't have an account? <a href="#">Contact admin</a></p>
-            </div>
-        </div>
-    </div>
+    </mat-card>
 </div>
