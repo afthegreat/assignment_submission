@@ -1,6 +1,8 @@
 package com.codecampus.AssignmentSubmissionApp.controller;
 
+import com.codecampus.AssignmentSubmissionApp.service.AuthorityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,28 +20,13 @@ import com.codecampus.AssignmentSubmissionApp.repository.UserRepository;
 public class AuthorityController {
 
 	@Autowired
-	private AuthorityRepository authorityRepository;
-	
-	@Autowired
-	private UserRepository userRepository;
+	private AuthorityService authorityService;
+
 	@PostMapping("/create")
 	@PreAuthorize("hasRole('ADMIN')")
-	public String createauthority(@RequestBody CreateAuthority request) {
-		System.out.println("inside the authority controller ");
-		//check if the user is existing
-		User user= userRepository.findById(request.getUserId())
-				.orElseThrow(()-> new RuntimeException("User not found"));
-		//check if the user has that role already
-		if(authorityRepository
-				.findByAuthorityAndUser(request.getAuthority(),user).isPresent()) {
-			return "User already has this role!";
-		}
-		//create the authority
-		
-		Authority authority= new Authority();
-		authority.setAuthority(request.getAuthority());
-		authority.setUser(user);
-		authorityRepository.save(authority);
-		return "Role Created Successfully for the user "+ user.getUsername();
+	public ResponseEntity<?> createauthority(@RequestBody CreateAuthority request){
+		Authority response=authorityService.createNewAuthority(request);
+		return ResponseEntity.ok(response);
 	}
+
 }

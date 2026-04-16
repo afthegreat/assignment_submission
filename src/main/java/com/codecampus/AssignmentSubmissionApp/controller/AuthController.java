@@ -2,8 +2,10 @@ package com.codecampus.AssignmentSubmissionApp.controller;
 
 import com.codecampus.AssignmentSubmissionApp.domain.RefreshToken;
 import com.codecampus.AssignmentSubmissionApp.dto.TokenRefreshRequest;
+import com.codecampus.AssignmentSubmissionApp.service.AuthService;
 import com.codecampus.AssignmentSubmissionApp.service.RefreshTokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -31,31 +33,14 @@ public class AuthController {
 
 	@Autowired
 	private RefreshTokenService refreshTokenService;
+	@Autowired
+	private AuthService authService;
 
 	@PostMapping("/login")
-	public AuthResponse login(@RequestBody AuthRequest request) {
-		System.out.println("USERNAME: [" + request.getUsername() + "]");
-		System.out.println("PASSWORD: [" + request.getPassword() + "]");
-		//Authentication user (username + password)
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(
-						request.getUsername(),
-						request.getPassword()));
-
-		//Get authentication user
-		UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
-		//Generate stateless access token
-		String accessToken = jwtUtil.generateToken(userDetails);
-
-		//casting userDetails to user entity to get the ID;
-		com.codecampus.AssignmentSubmissionApp.domain.User user = (com.codecampus.AssignmentSubmissionApp.domain.User) userDetails;
-
-		RefreshToken refreshToken = refreshTokenService.createRefreshToken(user.getId());
-		//Return token
-		return new AuthResponse(accessToken, refreshToken.getToken());
+	public ResponseEntity<?> login(@RequestBody AuthRequest request){
+		AuthResponse response=authService.login(request);
+		return ResponseEntity.ok(response);
 	}
-
 	@PostMapping("/refresh")
 	public AuthResponse refreshToken(@RequestBody TokenRefreshRequest request) {
 		String requestRefreshToken = request.getRefreshToken();
@@ -73,10 +58,8 @@ public class AuthController {
 	}
 
 	@PostMapping("/logout")
-	public String logout(@RequestBody TokenRefreshRequest request){
-		String refreshToken= request.getRefreshToken();
-		refreshTokenService.deleteByToken(refreshToken);
-
-		return "User logged out successfully. Refresh token deleted.";
+	public ResponseEntity<String> logout(@RequestBody TokenRefreshRequest request){
+		String response= authService.logout(request);
+		return ResponseEntity.ok(response);
 	}
 }
